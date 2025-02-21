@@ -1,0 +1,30 @@
+<div class="overlay location-overlay">
+  <!-- Location Info Container -->
+  <div class="location-container">
+    <div class="location-cards d-flex flex-wrap justify-content-center">
+      <!-- Wrapper to control row layout -->
+      <div class="d-flex flex-wrap justify-content-center" style="max-width: 100%; gap: 20px;">
+        {% for location in locations %}
+          <div class="card border shadow-sm position-relative" style="overflow: hidden; width: 300px;">
+            <a href="{% url 'view_location' location.location_name|slugify %}">
+              <!-- Location Image -->
+              <img src="{% if location.location_image %}
+                  {{ location.location_image.url }}
+                {% else %}
+                  
+                  https://media.cntraveler.com/photos/60596b398f4452dac88c59f8/master/w_320%2Cc_limit/MtFuji-GettyImages-959111140.jpg
+
+                {% endif %}"
+                class="card-img"
+                alt="{{ location.location_name }}" />
+              <!-- Overlay Text -->
+              <div class="card-img-overlay d-flex justify-content-center align-items-center bg-dark bg-opacity-50">
+                <h5 class="text-white text-uppercase font-weight-bold" style="text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);">{{ location.location_name }}</h5>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
