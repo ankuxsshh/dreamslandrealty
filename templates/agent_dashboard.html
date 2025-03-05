@@ -14,7 +14,8 @@
       .navbar-custom {
         background-color: #0c1e35;
       }
-      .navbar-custom .navbar-brand, .navbar-custom .nav-link {
+      .navbar-custom .navbar-brand,
+      .navbar-custom .nav-link {
         color: #ffffff;
       }
       .sidebar {
@@ -59,7 +60,7 @@
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Dreams Land Realty</a>
         <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search Properties..." aria-label="Search">
+          <input class="form-control me-2" type="search" placeholder="Search Properties..." aria-label="Search" />
           <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i></button>
         </form>
       </div>
@@ -67,9 +68,9 @@
 
     <div class="sidebar">
       <h4 class="text-center">Property Panel</h4>
-      <br>
-      <a href="#">🏠 Dashboard</a>
-      <a href="#" class="text-danger">🚪 Logout</a>
+      <br />
+      <a href="{% url 'add_property_agent' %}">🏠 Dashboard</a>
+      <a href="{% url 'agent_logout' %}" class="text-danger">🚪 Logout</a>
     </div>
 
     <div class="content">
@@ -85,24 +86,22 @@
                 <th scope="col">Property Name</th>
                 <th scope="col">Location</th>
                 <th scope="col">Status</th>
-                <th scope="col">Price</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
-                {% for property in properties %}
-              <tr>
-                <td><a href="#">{{ property.property_name }}</a></td>
-                <td>{{ property.property_location }}</td>
-                <td>
-                    {{ property.get_property_status_display }}
-                </td>
-                <td>{{ property.formatted_price }}</td>
-                <td>
-                  <a href="#" class="btn btn-sm btn-outline-primary btn-action"><i class="bi bi-pencil"></i> Edit</a>
-                  <a href="#" class="btn btn-sm btn-outline-danger btn-action"><i class="bi bi-trash"></i> Delete</a>
-                </td>
-              </tr>
+              {% for property in properties %}
+                <tr>
+                  <td>
+                    <a href="#">{{ property.property_name }}</a>
+                  </td>
+                  <td>{{ property.property_location }}</td>
+                  <td>{{ property.get_property_status_display }}</td>
+                  <td>
+                    <a href="{% url 'edit_property' property.id %}" class="btn btn-sm btn-outline-primary btn-action"><i class="bi bi-pencil"></i> Update</a>
+                    <a href="{% url 'delete_property' property.id %}" class="btn btn-sm btn-outline-danger btn-action"><i class="bi bi-trash"></i> Delete</a>
+                  </td>
+                </tr>
               {% endfor %}
             </tbody>
           </table>

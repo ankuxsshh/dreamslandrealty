@@ -314,41 +314,6 @@ def add_location(request):
 
     return render(request, "index.html")
 
-
-# def contact_view(request):
-#     if request.method == 'POST':
-#         form = ContactForm(request.POST)
-#         if form.is_valid():
-#             fullname = form.cleaned_data['fullname']
-#             phone = form.cleaned_data['phone']
-#             listingtype = form.cleaned_data['listingtype']
-#             address = form.cleaned_data['address']
-
-#             # Compose the email message
-#             message = f"""
-#             Full Name: {fullname}
-#             Phone: {phone}
-#             Listing Type: {listingtype}
-#             Comments: {address}
-#             """
-
-#             # Send email to sales@dreamlandrealty.com
-#             send_mail(
-#                 'Contact Form Submission',
-#                 message,
-#                 settings.DEFAULT_FROM_EMAIL,  # From email (sales@dreamlandrealty.com)
-#                 ['sales@dreamlandrealty.com'],  # To email (recipient)
-#                 fail_silently=False,  # Will raise an error if the email sending fails
-#             )
-
-#             # Redirect or show a success page after form submission
-#             return render(request, 'index.html')  # You can create a thank-you page for confirmation
-#     else:
-#         form = ContactForm()
-
-#     # Render the contact form for GET requests
-#     return render(request, 'index.html', {'form': form})
-
 def agent_login(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -368,20 +333,15 @@ def get_logged_in_agent(request):
         return None
     return Agent.objects.get(id=agent_id)
 
-
 def agent_dashboard(request):
     agent = get_logged_in_agent(request)
     if not agent:
         return redirect('agent_login')
-
-    # Fetch properties only in the agent's allocated locations
+    
+    # Fetch properties only in the agent's locations
     properties = Property.objects.filter(property_location__in=agent.allocated_locations.all())
-
-    # Ensure formatted price is included
-    for prop in properties:
-        prop.formatted_price = f"{prop.price:,.2f}"  # Format price as currency
-
     return render(request, 'agent_dashboard.html', {'properties': properties})
+
 
 
 def add_property_agent(request):
@@ -389,60 +349,30 @@ def add_property_agent(request):
     if not agent:
         return redirect('agent_login')
 
-    # Get the allocated location
-    locations = agent.allocated_locations.all()
-    if locations.count() != 1:
-        messages.error(request, "You must have exactly one allocated location to add a property.")
-        return redirect('agent_dashboard')  # Prevents adding property without a valid location
+    # Fetch only allocated locations for this agent
+    allocated_locations = agent.allocated_locations.all()
 
-    fixed_location = locations.first()  # Automatically assign the only allocated location
+    if request.method == 'POST':
+        form = PropertyForm(request.POST, request.FILES, locations_queryset=allocated_locations)
+        if form.is_valid():
+            property = form.save(commit=False)
 
-    if request.method == "POST":
-        property_name = request.POST.get("property_name")
-        bhk = request.POST.get("bhk")
-        square_feet = request.POST.get("square_feet")
-        possession_date = request.POST.get("possession_date")
-        property_status = request.POST.get("property_status")
-        property_description = request.POST.get("property_description")
-        short_description = request.POST.get("short_description")
-        price = request.POST.get("price")
-        property_type = request.POST.get("property_type")
-        property_subtype = request.POST.get("property_subtype")
-        plot_area = request.POST.get("plot_area")
-        plot_unit = request.POST.get("plot_unit")
+            # Assign location automatically if the agent has only one allocated location
+            if allocated_locations.count() == 1:
+                property.property_location = allocated_locations.first()
 
-        # File uploads
-        property_main_image = request.FILES.get("property_main_image")
-        gallery_1 = request.FILES.get("gallery_1")
-        gallery_2 = request.FILES.get("gallery_2")
-        gallery_3 = request.FILES.get("gallery_3")
+            property.save()
+            return redirect('agent_dashboard')
+    else:
+        form = PropertyForm(locations_queryset=allocated_locations)
 
-        # Create property object
-        new_property = Property(
-            property_name=property_name,
-            property_location=fixed_location,  # Assign fixed location
-            bhk=int(bhk) if bhk else None,
-            square_feet=int(square_feet) if square_feet else None,
-            possession_date=possession_date if possession_date else date.today(),
-            property_status=property_status,
-            property_description=property_description,
-            short_description=short_description,
-            price=float(price) if price else None,
-            property_type=property_type,
-            property_subtype=property_subtype,
-            plot_area=plot_area,
-            plot_unit=plot_unit,
-            property_main_image=property_main_image,
-            gallery_1=gallery_1,
-            gallery_2=gallery_2,
-            gallery_3=gallery_3,
-        )
+        # Pre-set and disable location if agent has only one location
+        if allocated_locations.count() == 1:
+            form.fields['property_location'].initial = allocated_locations.first()
+            # form.fields['property_location'].disabled = True
 
-        new_property.save()
-        messages.success(request, "Property added successfully!")
-        return redirect("agent_dashboard")
+    return render(request, 'property_form.html', {'form': form})
 
-    return render(request, "add_property.html", {"fixed_location": fixed_location})
 
 def edit_property(request, property_id):
     agent = get_logged_in_agent(request)
@@ -484,6 +414,7 @@ def agent_logout(request):
     logout(request)
     request.session.flush()
     return redirect('agent_login')
+
 
 def send_whatsapp(request):
     property_id = request.GET.get('property_id')
