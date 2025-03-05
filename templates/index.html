@@ -1,0 +1,310 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Dreams Land Realty - Your Dream Property Awaits You
+{% endblock %}
+
+{% block content %}
+<body>
+  <br>
+  <br>
+  <br>
+  <div class="background-section d-flex align-items-center justify-content-center">
+    <div class="text-center text-white">
+      <h1 class="h3-heading text-white" style="font-size: 42px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);" data-aos="fade-right"><b>Welcome to 
+        <br>DREAMS LAND REALTY</b></h1>
+      <p class="p-heading text-white" style="font-size: 22px; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);" data-aos="fade-right"><b>Your dream property awaits you</b></p>      
+  
+      <!-- Search Bar Section -->
+      <div class="container mt-4">
+       <form method="GET" action="{% url 'search_properties' %}">
+       <div class="search-bar d-flex justify-content-center">
+        <div class="input-group align-items-stretch">
+         <button class="btn btn-primary location-btn" type="button" data-aos="fade-right">
+          <i class="fas fa-map-marker-alt" style="font-size: 22px"></i>
+         </button>
+
+    <!-- Single search input for both location and property ID -->
+    <input
+      type="text"
+      id="searchInput"
+      name="search"
+      class="form-control"
+      placeholder="Search by Location or Property ID"
+      aria-label="Search properties"
+      list="locationList"
+      autocomplete="off"
+      data-aos="fade-right"
+      value="{{ search_query }}"/>
+  
+    <!-- Datalist for location suggestions -->
+    <datalist id="locationList">
+      {% for location in locations %}
+        <option value="{{ location.location_name }}">{{ location.location_name }}</option>
+      {% endfor %}
+    </datalist>
+
+         <button class="btn btn-primary bars-btn " type="button" style="border-radius: 0px 5px 5px 0px;" data-aos="fade-right">
+          <i class="fa fa-bars" style="font-size: 22px; border-radius: 5px;"></i>
+         </button>
+         <button 
+          type="submit" 
+          class="contact-btn btn btn-primary" 
+          style="border-radius: 5px; height: 56px;" data-aos="fade-right">
+          Find Property
+         </button>
+        </div>
+       </div>
+       </form>
+      </div>
+    </div> 
+  </div>
+
+<!-- Location Overlay -->
+{% include 'filterlocation.html' %}
+
+<!-- Main Filter Container -->
+{% include 'advancedfilters.html' %}
+
+<div class="container mt-5">
+  <b>
+    <h2 class="text-center" style="color: #0a032f; font-size: 38px; " data-aos="fade-right"><b>Featured Properties</b></h2>
+  </b>
+  <!-- Row -->
+  <div class="row justify-content-center gx-3 mt-4">
+  {% for property in properties %}
+    <div class="col-md-4">
+      <div class="card" data-aos="fade-right">
+          <!-- Display property main image -->
+          {% if property.property_main_image %}
+          <img src="{{ property.property_main_image.url }}" alt="{{ property.property_name }}" class="card-img-top" data-aos="fade-right"/>
+          {% else %}
+          <img src="/static/default-image.jpg" alt="Default Image" class="card-img-top" data-aos="fade-right" />
+          {% endif %}
+
+          <div class="container">
+              <h4 class="" style="font-weight: 600;" data-aos="fade-right">{{ property.property_name }}</h4>
+              <p class="" style="font-weight: 600;" data-aos="fade-right">{{ property.property_location }}</p>
+              <div class="info-row">
+                  <div class="row">
+                      <div class="col">
+                          <p class="p12">
+                            <b class="" style="font-weight: 600;" data-aos="fade-right">{{ property.property_id }}</b>
+                        </p>
+                        <p class="p12" data-aos="fade-right">ID number</p>
+                      </div>
+                      <div class="col">
+                          <p class="p12">
+                              <b class="" style="font-weight: 600;" data-aos="fade-right">{{ property.square_feet }}</b>
+                          </p>
+                          <p class="p12" data-aos="fade-right">sq.ft</p>
+                      </div>
+                  </div>
+                  <div class="row mt-2">
+                      <div class="col">
+                          <p class="p12">
+                              <b class="" style="font-weight: 600;" data-aos="fade-right">{{ property.plot_area }} {{ property.plot_unit }}</b>
+                          </p>
+                          <p class="p12" data-aos="fade-right">Plot Area</p>
+                      </div>
+                      <div class="col">
+                          <b style="color: {% if property.is_available %}green{% else %}red{% endif %}; font-weight: 600" data-aos="fade-right">
+                              {{ property.get_property_status_display }}
+                          </b>      
+                          <p class="p12" data-aos="fade-right">Status</p>        
+                      </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col">
+                      <p class="p12">
+                        <b class="" style="font-weight: 600;" data-aos="fade-right">{{ property.bhk }} BHK</b>
+                    </p>
+                    <p class="p12" data-aos="fade-right">Configurations</p>
+                    </div>
+                    <div class="col">
+                      <p class="p12">
+                        <b class="" style="font-weight: 600;" data-aos="fade-right">INR {{ property.formatted_price }}</b>
+                    </p>
+                    <p class="p12" data-aos="fade-right">Price</p>     
+                    </div>
+                </div>
+                  <br />
+                  <a href="{% url 'propertydetails' property.id %}" class="btn btn-primary contact-btn" data-aos="fade-right">Know more</a>
+              </div>
+          </div>
+
+          <!-- New Description Container -->
+          <div class="description-container">
+              <p data-aos="fade-right">{{ property.short_description }}</p>
+          </div>
+      </div>
+    </div>
+  {% empty %}
+  <p class="text-center" data-aos="fade-right">No properties found.</p>
+  {% endfor %}
+  </div>
+</div>
+  
+  <br />
+  <br />
+  <br />
+  
+  <h2 class="text-center" style="color: #0a032f; font-size: 38px;" data-aos="fade-right"><b>Reach out with any questions !</b></h2>
+  <div class="container mt-5 d-flex justify-content-center">
+    <div class="row align-items-center">
+      <!-- Image Section -->
+      <div class="col-md-6 d-flex justify-content-center mb-3">
+        <div class="contact-image-container">
+          <img src="https://images.unsplash.com/photo-1615840287214-7ff58936c4cf?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29udGFjdCUyMHVzfGVufDB8fDB8fHww" 
+            alt="Property Image" style="border-radius: 10px; max-width: 100%; height: 500px;" data-aos="fade-right"/>
+        </div>
+      </div>
+      <!-- Form Section -->
+      <div class="col-md-6 d-flex justify-content-center mb-3">
+        <div class="contact-form-container" data-aos="fade-right">
+          <form id="contact-form">
+            <div class="form-group">
+              <label for="fullname"></label>
+              <input type="text" class="form-control" id="fullname" placeholder="Enter your full name" style="border-radius: 10px;" required  data-aos="fade-right"/>
+            </div>
+            <div class="form-group">
+              <label for="phone"></label>
+              <input type="text" class="form-control" id="phone" placeholder="Enter your phone number*" style="border-radius: 10px;" required  data-aos="fade-right"/>
+            </div>
+            <div class="form-group">
+              <label for="listingtype"></label>
+              <select class="form-control" id="listingtype" style="border-radius: 10px;" data-aos="fade-right" required>
+                <option value="" disabled selected>Select listing type</option>
+                <option>Seller</option>
+                <option>Buyer</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="address"></label>
+              <textarea class="form-control" id="address" rows="3" placeholder="Enter your comments" style="border-radius: 10px;" data-aos="fade-right" required></textarea>
+            </div>
+            <!-- Submit Button -->
+            <button type="submit" class="contact-btn text-white btn btn-primary" style="margin: 5px;" data-aos="fade-right">Submit</button>            
+            <p class="terms mt-1" style="font-size: 10px; margin-left: 10px;" data-aos="fade-right">By clicking submit, you agree to our terms and conditions</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <h2 class="text-center" style="color: #0a032f; font-size: 38px; " data-aos="fade-right"><b>Explore Our Features</b></h2>
+    <div class="row justify-content-center">
+      <!-- Property Shot Card 1 -->
+      <div class="col-md-4 mb-4">
+        <div class="property-shot-card bg-light h-100" data-aos="fade-right">
+          <div class="image-wrapper">
+            <img src="https://media.istockphoto.com/id/1391413216/photo/rising-prices-for-real-estate.jpg?s=612x612&w=0&k=20&c=1vud3tbKNcXMGB2AVe6b5dSG3DwqMTRk_j55yUIVdSE=" class="img-fluid rounded" alt="PropValue"  data-aos="fade-right"/>
+          </div>
+          <h3 class="text-center" data-aos="fade-right">PropValue</h3>
+        </div>
+      </div>
+      <!-- Property Shot Card 2 -->
+      <div class="col-md-4 mb-4">
+        <div class="property-shot-card bg-light h-100" data-aos="fade-right">
+          <div class="image-wrapper">
+            <img src="https://www.icicibank.com/content/dam/icicibank/icici-assets/nri-edge/16_sale-of-immovable-property-in-india-by-an-nri.webp" class="img-fluid rounded" alt="Buy VS Rent"  data-aos="fade-right"/>
+          </div>
+          <h3 class="text-center" data-aos="fade-right">Sell</h3>
+        </div>
+      </div>
+      <!-- Property Shot Card 3 -->
+      <div class="col-md-4 mb-4">
+        <div class="property-shot-card bg-light h-100" data-aos="fade-right">
+          <div class="image-wrapper">
+            <img src="https://st.depositphotos.com/1092019/2637/i/450/depositphotos_26377343-stock-photo-keyboard-with-tips-and-tricks.jpg" class="img-fluid rounded" alt="Tips and Guides"  data-aos="fade-right"/>
+          </div>
+          <h3 class="text-center" data-aos="fade-right">Tips and Guides</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container my-5">
+    <div class="row">
+      <!-- Left Div for Paragraph Text -->
+      <div class="col-md-6 p-4 text-container justify-content-center justify-text">
+        <h5 class="text-center justify-content-center" style="font-size: 26px; margin-top: 20px;" data-aos="fade-right">Our Happy Customers</h5>
+        <p data-aos="fade-right">Find your perfect property with us! Whether you seek a cozy home, a luxurious estate, or a smart investment, we have a wide selection to meet your needs. Our curated listings cater to every lifestyle and budget, ensuring you'll discover a place to call your own. With expert guidance and personalized service, we make the process smooth and stress-free. Let us help you turn your real estate dreams into realty, whether it's your first home or your next big investment.</p>
+      </div>
+
+      <!-- Right Div for YouTube Video -->
+      <div class="col-md-6 video-container" data-aos="fade-right">
+        <a href="https://www.youtube.com/watch?v=MNbb67oZQKg" target="_blank"><iframe width="560" height="315" src="https://www.youtube.com/embed/MNbb67oZQKg?si=NtcacpLP_8HJtJwW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></a>
+      </div>
+    </div>
+  </div>
+
+<section>
+  <div class="container">
+<h2 class="text-center" style="color: #0a032f; font-size: 38px;" data-aos="fade-right"><b>Associated Builders</b></h2>
+<p class="lead text-center" style="font-size: 16px;" data-aos="fade-right">
+  We collaborate with a diverse range of builders, both established brands and local developers. Our builder network system lies in matching clients with properties that align with their specific preferences and investment goals. We help match our customers with homes they’ll love that fit their needs and budget. Dreams Land Realty is proud to collaborate with some of India’s most renowned real estate developers to offer you a diverse range of exceptional properties. By partnering with these industry leaders, we bring you a portfolio of projects that combine architectural excellence, superior craftsmanship, and prime locations, capital appreciation, future developments, etc.
+</p>
+    <div class="col-12">
+      <div class="weprovide-slider">
+        <div class="weprovide-cards-wrapper">
+          <!-- Repeat card structure -->
+          <div class="weprovide-cards">
+            <img src="https://i.pinimg.com/474x/58/68/4b/58684bc22e2c26584d9117539984d2eb.jpg" alt="">
+          </div>
+          <div class="weprovide-cards">
+            <img src="https://portfolio.investmentguruindia.com/investmentguruimages/upload/post/2022/04/f5d0441cf653878a25847a1f7289702c.jpg" alt="">
+          </div>
+          <div class="weprovide-cards">
+            <img src="https://i.pinimg.com/474x/1e/21/cd/1e21cd64ca027a4d2a1516d6f8ea091f.jpg" alt="">
+          </div>
+          <div class="weprovide-cards">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/d/de/Puravankara_Logo-01.jpg" alt="">
+          </div>
+          <div class="weprovide-cards">
+            <img src="https://searchlogovector.com/wp-content/uploads/2018/05/godrej-properties-logo-vector.png" alt="">
+          </div>
+          <div class="weprovide-cards">
+            <img src="https://www.assethomes.in/wp-content/uploads/2022/03/asset-homes.webp" alt="">
+          </div>
+          <div class="weprovide-cards">
+            <img src="https://careers.malabargroup.com/images/verticals/vertical21.jpg" alt="">
+          </div>
+          <div class="weprovide-cards">
+            <img src="https://i.pinimg.com/474x/58/68/4b/58684bc22e2c26584d9117539984d2eb.jpg" alt="">
+          </div>
+          <div class="weprovide-cards">
+            <img src="https://gharinvest.com/wp-content/uploads/2017/11/lodha-500x328.webp" alt="">
+          </div>
+          <div class="weprovide-cards">
+            <img src="https://portfolio.investmentguruindia.com/investmentguruimages/upload/post/2022/04/f5d0441cf653878a25847a1f7289702c.jpg" alt="">
+          </div>
+          <div class="weprovide-cards">
+            <img src="https://i.pinimg.com/474x/1e/21/cd/1e21cd64ca027a4d2a1516d6f8ea091f.jpg" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="container mt-2">
+  <div class="container-wrapper">
+    <div class="left-container">
+      <p11 data-aos="fade-right">At Dreams Land Realty, we’re not just in the business of properties; we’re in the business of dreams.</p11>
+      <p11 data-aos="fade-right">We combine expertise with a personal touch, treating every client like family.</p11>
+      <p11 data-aos="fade-right"> Our mission is to be your partner in real estate, leveraging innovation and integrity to secure </p11>
+      <p11 data-aos="fade-right"> your wealth and turn your property aspirations into realty.</p11>
+      <br>
+      <p12 data-aos="fade-right">- <b style="font-weight: 500;">Vimal Vidhyadharan</b></p12>
+      <p13 style="font-weight: 500;" data-aos="fade-right">Founder of Dreams Land Realty</p13>
+    </div>
+    <div class="right-container">
+      <img src="static/images/ceo.png" alt="CEO Image" data-aos="fade-right">
+    </div>
+  </div>
+</div>  
+<br><br>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ property.property_name }} {{ property.property_location }} - Dreams Land Realty
+{% endblock %}
+
+{% block content %}
+  <br />
+  <br />
+  <!-- Property Details Parallax Section -->
+  <div class="property-details-parallax">
+    <div class="parallax-content text-center text-white">
+      <br />
+      <p class="text-white">{{ property.property_name }}</p>
+    </div>
+  </div>
+
+  <!-- Property Detail Container Section -->
+  <div class="container my-5">
+    <!-- Property Title and Location -->
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="property-title">{{ property.property_name }}</h3>
+        <p class="property-location">{{ property.property_location }}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Property Gallery Container Section (Left Column for Main Image and Gallery) -->
+      <div class="col-md-8 d-flex flex-column gallery-container">
+        {% if property.property_main_image %}
+          <img src="{{ property.property_main_image.url }}" class="img-fluid mb-4 main-image" alt="Main Property Image" />
+        {% else %}
+          <p class="text-muted">No main image available</p>
+        {% endif %}
+
+        <div class="row property-gallery-container">
+          {% if property.gallery_1 %}
+            <div class="col-6 col-md-4 gallery-image">
+              <img src="{{ property.gallery_1.url }}" class="img-fluid img-gallery" alt="Gallery Image 1" />
+            </div>
+          {% endif %}
+          {% if property.gallery_2 %}
+            <div class="col-6 col-md-4 gallery-image">
+              <img src="{{ property.gallery_2.url }}" class="img-fluid img-gallery" alt="Gallery Image 2" />
+            </div>
+          {% endif %}
+          {% if property.gallery_3 %}
+            <div class="col-6 col-md-4 gallery-image">
+              <img src="{{ property.gallery_3.url }}" class="img-fluid img-gallery" alt="Gallery Image 3" />
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="col-md-4 d-flex flex-column justify-content-between property-information-right-container bg-light p-4">
+        <h2 class="text-primary">INR <strong class="" style="font-weight: 600;">{{ property.formatted_price }}</strong></h2>
+        <button onclick="sendToWhatsApp('{{ property.property_id }}')" class="btn btn-warning btn-block mb-3">
+          CONTACT NOW
+      </button>      
+        <p>ID Number : <strong class="" style="font-weight: 600;">{{ property.property_id }}</strong></p>
+        <p><strong class="" style="font-weight: 600;">{{ property.property_name }}</strong></p>
+        <p>Location : <strong class="" style="font-weight: 600;">{{ property.property_location }}</strong></p>
+        <p>Property Type : <strong class="" style="font-weight: 600;">{{ property.property_type }}</strong></p>
+        <p>Subtype : <strong class="" style="font-weight: 600;">{{ property.property_subtype }}</strong></p>
+        <p>Listed On : <strong class="" style="font-weight: 600;">{{ property.possession_date }}</strong></p>
+        <p>Plot Area : <strong class="" style="font-weight: 600;">{{ property.plot_area }} {{ property.plot_unit }}</strong></p>
+        <p>Square feet Area : <strong class="" style="font-weight: 600;">{{ property.square_feet }} Sq.ft</strong></p>
+        <p>Configurations : <strong class="" style="font-weight: 600;">{{ property.bhk }} BHK</strong></p>
+      </div>
+    </div>
+
+    <div class="text-center justify-content-center">
+      <br />
+      <h4 class="property-description-title">PROPERTY DESCRIPTION</h4>
+      <p class="property-description">{{ property.property_description }}</p>
+    </div>
+  </div>
+
+  <!-- Contact Form Section -->
+  <div class="container my-5">
+    <div class="bg-light form-container">
+      <form>
+        <p class="text-center form-title">Fill in your details and we'll get back to you regarding the property!</p>
+        <div class="mb-3">
+          <input type="text" class="form-control" id="name" placeholder="Enter your name" required />
+        </div>
+        <div class="mb-3">
+          <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required />
+        </div>
+        <div class="mb-3">
+          <textarea class="form-control" id="message" rows="4" placeholder="Enter your message here" required></textarea>
+        </div>
+        <button onclick="window.location.href='https://wa.me/+916238061066'" class="btn btn-warning btn-block mb-3">CONTACT NOW</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

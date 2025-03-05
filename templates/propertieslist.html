@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Properties - Dreams Land Realty
+{% endblock %}
+
+{% block content %}
+  <br />
+  <br />
+  <!-- Parallax Section -->
+  <div class="parallax-section">
+    <div class="parallax-content text-center text-white">
+      <br />
+      <h1 data-aos="fade-right" class="text-white">Properties</h1>
+      <p data-aos="fade-right" class="text-white">Dreams Land Realty: Your Trusted Real Estate Partner</p>
+    </div>
+  </div>
+
+  <br />
+
+  <div class="container-fluid mt-5">
+    <b><h2 class="text-center" data-aos="fade-right" style="color: #0a032f; font-size: 38px; "><b>Featured Properties</b></h2></b>
+    <!-- Row -->
+    <div class="row justify-content-center gx-3 mt-4">
+      {% for property in properties %}
+        <div class="col-md-4">
+          <div class="card" data-aos="fade-right">
+            <!-- Display property main image -->
+            {% if property.property_main_image %}
+              <img src="{{ property.property_main_image.url }}" alt="{{ property.property_name }}" class="card-img-top" />
+            {% else %}
+              <img src="/static/default-image.jpg" alt="Default Image" class="card-img-top" />
+            {% endif %}
+
+            <div class="container">
+              <h4 class="" style="font-weight: 600;">{{ property.property_name }}</h4>
+              <p class="" style="font-weight: 600;">
+                <i class="fa-solid fa-location-dot"></i> {{ property.property_location }}
+              </p>
+              <div class="info-row">
+                <div class="row">
+                  <div class="col">
+                    <p class="p12">ID number</p>
+                    <p class="p12">
+                      <b class="" style="font-weight: 600;">{{ property.property_id }}</b>
+                    </p>
+                  </div>
+                  <div class="col">
+                    <p class="p12">sq.ft</p>
+                    <p class="p12">
+                      <b class="" style="font-weight: 600;">{{ property.square_feet }}</b>
+                    </p>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col">
+                    <p class="p12">Plot Area</p>
+                    <p class="p12">
+                      <b class="" style="font-weight: 600;">{{ property.plot_area }} {{ property.plot_unit }}</b>
+                    </p>
+                  </div>
+                  <div class="col">
+                    <p class="p12">Status</p>
+                    <b style="color: {% if property.is_available %}
+                        green
+                      {% else %}
+                        red
+                      {% endif %}; font-weight: 600">
+                      {{ property.get_property_status_display }}
+                    </b>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col">
+                    <p class="p12">Configurations</p>
+                    <p class="p12">
+                      <b class="" style="font-weight: 600;">{{ property.bhk }} BHK</b>
+                    </p>
+                  </div>
+                  <div class="col">
+                    <p class="p12">Price</p>
+                    <p class="p12">
+                      <b class="" style="font-weight: 600;">INR {{ property.formatted_price }}</b>
+                    </p>
+                  </div>
+                </div>
+                <br />
+                <a href="{% url 'propertydetails' property.id %}" class="btn btn-primary contact-btn">Know more</a>
+              </div>
+            </div>
+
+            <!-- New Description Container -->
+            <div class="description-container">
+              <p class="text-white">{{ property.short_description }}</p>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-center" data-aos="fade-right">No properties found.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <br />
+  <br />
+  <br />
+
+  <style>
+    .parallax-section {
+      background-image: url('https://bladerunnerunicorn.com/wp-content/uploads/2024/02/1-The-booming-demand-for-luxury-real-estate-in-Dubai-attracts-the-global-elite.jpg');
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .parallax-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: -1;
+    }
+    
+    .parallax-content {
+      z-index: 2;
+    }
+    
+    .parallax-content h1 {
+      font-size: 3rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .parallax-content p {
+      font-size: 1.25rem;
+      font-weight: 300;
+    }
+    
+    /* Responsive adjustments */
+    @media only screen and (max-width: 600px) {
+      .parallax-content h1 {
+        font-size: 2.5rem;
+      }
+    
+      .parallax-content p {
+        font-size: 1rem;
+      }
+    
+      .overlay-heading {
+        font-size: 20px; /* Ensure the heading is appropriately sized on mobile */
+      }
+    
+      .text {
+        font-size: 14px; /* Adjust the paragraph text for better readability */
+      }
+    }
+  </style>
+{% endblock %}

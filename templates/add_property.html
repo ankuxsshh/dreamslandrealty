@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Property</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>ADD PROPERTY</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Property Location</label>
+                <input type="text" class="form-control" value="{{ fixed_location.location_name }}" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label for="property_name">Property Name</label>
+                <input type="text" class="form-control" name="property_name" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="bhk">BHK</label>
+                    <input type="number" class="form-control" name="bhk">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="square_feet">Square Feet</label>
+                    <input type="number" class="form-control" name="square_feet">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="possession_date">Possession Date</label>
+                <input type="date" class="form-control" name="possession_date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="property_status">Property Status</label>
+                <select class="form-control" name="property_status">
+                    <option value="available">Available</option>
+                    <option value="sold">Sold</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="property_description">Description</label>
+                <textarea class="form-control" name="property_description" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="short_description">Short Description</label>
+                <textarea class="form-control" name="short_description" rows="2"></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="price">Price (in Rupees)</label>
+                    <input type="number" step="0.01" class="form-control" name="price">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="property_type">Property Type</label>
+                    <select class="form-control" name="property_type" required>
+                        <option value="residential">Residential</option>
+                        <option value="commercial">Commercial</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="property_subtype">Property Subtype</label>
+                <select class="form-control" name="property_subtype" required>
+                    <option value="residential_villas/houses">Residential Villa / Houses</option>
+                    <option value="residential_apartments">Residential Apartment</option>
+                    <option value="residential_land">Residential Land</option>
+                    <option value="residential_others">Residential Other</option>
+                    <option value="commercial_shop">Commercial Shop</option>
+                    <option value="commercial_land">Commercial Land</option>
+                    <option value="commercial_building">Commercial Building</option>
+                    <option value="commercial_others">Commercial Other</option>
+                </select>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="plot_area">Plot Area</label>
+                    <input type="text" class="form-control" name="plot_area">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="plot_unit">Plot Unit</label>
+                    <select class="form-control" name="plot_unit">
+                        <option value="cent">Cent</option>
+                        <option value="acre">Acre</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="property_main_image">Main Image</label>
+                <input type="file" class="form-control-file" name="property_main_image">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="gallery_1">Gallery Image 1</label>
+                    <input type="file" class="form-control-file" name="gallery_1">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="gallery_2">Gallery Image 2</label>
+                    <input type="file" class="form-control-file" name="gallery_2">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="gallery_3">Gallery Image 3</label>
+                    <input type="file" class="form-control-file" name="gallery_3">
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Add Property</button>
+                <a href="{% url 'agent_dashboard' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

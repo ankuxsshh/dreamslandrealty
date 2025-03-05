@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Properties - Dreams Land Realty
+{% endblock %}
+
+{% block content %}
+  <br />
+  <br />
+  <!-- Parallax Section -->
+  <div class="parallax-section">
+    <div class="parallax-content text-center text-white">
+      <br />
+      <h1 data-aos="fade-right" class="text-white">Properties</h1>
+      <p data-aos="fade-right" class="text-white">Dreams Land Realty: Your Trusted Real Estate Partner</p>
+
+      <!-- Search Bar Section -->
+      <div class="container mt-4">
+        <form method="GET" action="{% url 'search_properties' %}">
+          <div class="search-bar d-flex justify-content-center">
+            <div class="input-group align-items-stretch">
+              <button class="btn btn-primary location-btn" type="button" style="border-radius: 5px 0px 0px 5px;"data-aos="fade-right"><i class="fas fa-map-marker-alt" style="font-size: 22px"></i></button>
+
+              <!-- Single search input for both location and property ID -->
+              <input type="text" id="searchInput" name="search" class="form-control" placeholder="Search by Location or Property ID" aria-label="Search properties" list="locationList" autocomplete="off" data-aos="fade-right" value="{{ search_query }}" />
+
+              <!-- Datalist for location suggestions -->
+              <datalist id="locationList">
+                {% for location in locations %}
+                  <option value="{{ location.location_name }}">{{ location.location_name }}</option>
+                {% endfor %}
+              </datalist>
+
+              <button class="btn btn-primary bars-btn" type="button" style="border-radius: 0px 5px 5px 0px;" data-aos="fade-right"><i class="fa fa-bars" style="font-size: 22px"></i></button>
+              <button type="submit" class="contact-btn btn btn-primary" style="border-radius: 5px; height: 56px;" data-aos="fade-right">Find Property</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Overlay -->
+  {% include 'filterlocation.html' %}
+
+  <!-- Main Filter Container -->
+  {% include 'advancedfilters.html' %}
+  <br />
+
+  <div class="container mt-5">
+    <b>
+      <h2 class="text-center" style="color: #0a032f; font-size: 38px; " data-aos="fade-right"><b>Featured Properties</b></h2>
+    </b>
+    <!-- Row -->
+    <div class="row justify-content-center gx-3 mt-4">
+    {% for property in properties %}
+      <div class="col-md-4">
+        <div class="card" data-aos="fade-right">
+            <!-- Display property main image -->
+            {% if property.property_main_image %}
+            <img src="{{ property.property_main_image.url }}" alt="{{ property.property_name }}" class="card-img-top" data-aos="fade-right"/>
+            {% else %}
+            <img src="/static/default-image.jpg" alt="Default Image" class="card-img-top" data-aos="fade-right" />
+            {% endif %}
+  
+            <div class="container">
+                <h4 class="" style="font-weight: 600;" data-aos="fade-right">{{ property.property_name }}</h4>
+                <p class="" style="font-weight: 600;" data-aos="fade-right">{{ property.property_location }}</p>
+                <div class="info-row">
+                    <div class="row">
+                        <div class="col">
+                            <p class="p12">
+                              <b class="" style="font-weight: 600;" data-aos="fade-right">{{ property.property_id }}</b>
+                          </p>
+                          <p class="p12" data-aos="fade-right">ID number</p>
+                        </div>
+                        <div class="col">
+                            <p class="p12">
+                                <b class="" style="font-weight: 600;" data-aos="fade-right">{{ property.square_feet }}</b>
+                            </p>
+                            <p class="p12" data-aos="fade-right">sq.ft</p>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col">
+                            <p class="p12">
+                                <b class="" style="font-weight: 600;" data-aos="fade-right">{{ property.plot_area }} {{ property.plot_unit }}</b>
+                            </p>
+                            <p class="p12" data-aos="fade-right">Plot Area</p>
+                        </div>
+                        <div class="col">
+                            <b style="color: {% if property.is_available %}green{% else %}red{% endif %}; font-weight: 600" data-aos="fade-right">
+                                {{ property.get_property_status_display }}
+                            </b>      
+                            <p class="p12" data-aos="fade-right">Status</p>        
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col">
+                        <p class="p12">
+                          <b class="" style="font-weight: 600;" data-aos="fade-right">{{ property.bhk }} BHK</b>
+                      </p>
+                      <p class="p12" data-aos="fade-right">Configurations</p>
+                      </div>
+                      <div class="col">
+                        <p class="p12">
+                          <b class="" style="font-weight: 600;" data-aos="fade-right">INR {{ property.formatted_price }}</b>
+                      </p>
+                      <p class="p12" data-aos="fade-right">Price</p>     
+                      </div>
+                  </div>
+                    <br />
+                    <a href="{% url 'propertydetails' property.id %}" class="btn btn-primary contact-btn" data-aos="fade-right">Know more</a>
+                </div>
+            </div>
+  
+            <!-- New Description Container -->
+            <div class="description-container">
+                <p data-aos="fade-right">{{ property.short_description }}</p>
+            </div>
+        </div>
+      </div>
+    {% empty %}
+    <p class="text-center" data-aos="fade-right">No properties found.</p>
+    {% endfor %}
+    </div>
+  </div>
+
+  <br />
+  <br />
+  <br />
+
+  <style>
+    .parallax-section {
+      background-image: url('https://bladerunnerunicorn.com/wp-content/uploads/2024/02/1-The-booming-demand-for-luxury-real-estate-in-Dubai-attracts-the-global-elite.jpg');
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .parallax-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: -1;
+    }
+    
+    .parallax-content {
+      z-index: 2;
+    }
+    
+    .parallax-content h1 {
+      font-size: 3rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .parallax-content p {
+      font-size: 1.25rem;
+      font-weight: 300;
+    }
+    
+    /* Responsive adjustments */
+    @media only screen and (max-width: 768px) {
+      .parallax-content h1 {
+        font-size: 2.5rem;
+      }
+    
+      .parallax-content p {
+        font-size: 1rem;
+      }
+    
+      .overlay-heading {
+        font-size: 20px; /* Ensure the heading is appropriately sized on mobile */
+      }
+    
+      .text {
+        font-size: 14px; /* Adjust the paragraph text for better readability */
+      }
+    }
+  </style>
+{% endblock %}
