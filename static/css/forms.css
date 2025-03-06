@@ -1,0 +1,90 @@
+body {
+    border-radius: 0;
+    font-family: "Montserrat", sans-serif;
+}
+
+.card {
+    border-radius: 0px;
+    overflow: hidden;
+    /* width: 700px; */
+}
+
+.card-header {
+    border-radius: 0 !important;
+}
+
+.nav-tabs .nav-link {
+    color: #333;
+    font-weight: 500;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+
+.navbar-custom {
+    background-color: #0c1e35;
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+    color: #ffffff;
+}
+
+.sidebar {
+    height: 100vh;
+    width: 250px;
+    background-color: #162a49;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+    color: white;
+}
+
+.sidebar a {
+    padding: 10px 15px;
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    background-color: #1e3b64;
+}
+
+.content {
+    margin-left: 260px;
+    padding: 20px;
+}
+
+.dashboard-header {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-action {
+    margin-right: 5px;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.btn-success {
+    border-radius: 0;
+    padding: 10px;
+}
+
+.form-label {
+    margin-bottom: 0;
+}

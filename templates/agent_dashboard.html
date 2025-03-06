@@ -1,3 +1,31 @@
+
+
+
+{% comment %} <h2>Welcome, Agent Dashboard</h2>
+<a href="{% url 'agent_logout' %}">Logout</a>
+<a href="{% url 'add_property_agent' %}">Add New Property</a>
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    {% for property in properties %}
+        <tr>
+            <td>{{ property.property_name }}</td>
+            <td>{{ property.property_location }}</td>
+            <td>{{ property.property_status }}</td>
+            <td>
+                <a href="{% url 'edit_property' property.id %}">Edit</a>
+                <a href="{% url 'delete_property' property.id %}">Delete</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table> {% endcomment %}
+
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -7,9 +35,11 @@
     <title>Property Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>
       body {
         background-color: #f8f9fa;
+        font-family: "Montserrat", sans-serif;
       }
       .navbar-custom {
         background-color: #0c1e35;
@@ -53,6 +83,9 @@
       .table-hover tbody tr:hover {
         background-color: #f8f9fa;
       }
+      .form-control {
+        border-radius: 0px !important;
+      }
     </style>
   </head>
   <body>
@@ -67,16 +100,16 @@
     </nav>
 
     <div class="sidebar">
-      <h4 class="text-center">Property Panel</h4>
+      <h4 class="text-center">AGENT PANEL</h4>
       <br />
-      <a href="{% url 'add_property_agent' %}">🏠 Dashboard</a>
+      <a href="{% url 'agent_dashboard' %}">🏠 Dashboard</a>
       <a href="{% url 'agent_logout' %}" class="text-danger">🚪 Logout</a>
     </div>
 
     <div class="content">
       <div class="dashboard-header">
         <h2>Properties</h2>
-        <a href="{% url 'add_property' %}" class="btn btn-success">Add New Property</a>
+        <a href="{% url 'add_property_agent' %}" class="btn btn-success">Add New Property</a>
       </div>
       <div class="card shadow-sm mt-4">
         <div class="card-body">
@@ -93,7 +126,7 @@
               {% for property in properties %}
                 <tr>
                   <td>
-                    <a href="#">{{ property.property_name }}</a>
+                    <a href="{% url 'propertydetails' property.id %}">{{ property.property_name }}</a>
                   </td>
                   <td>{{ property.property_location }}</td>
                   <td>{{ property.get_property_status_display }}</td>
@@ -111,3 +144,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
+

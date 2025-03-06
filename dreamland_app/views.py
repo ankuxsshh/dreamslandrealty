@@ -12,7 +12,7 @@ from django.contrib import messages
 from datetime import date
 from django.http import JsonResponse
 import urllib.parse
-
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .forms import PropertyForm
 
@@ -66,40 +66,6 @@ def globalreach(request):
 def agentsnetwork(request):
     """Render the agents network page."""
     return render(request, "agentsnetwork.html")
-
-
-# Location dictionary
-LOCATIONS = {
-    "abu_dhabi": "Abu Dhabi",
-    "sharjah": "Sharjah",
-    "dubai": "Dubai",
-    "umm_al_quwain": "Umm Al Quwain",
-    "fujairah": "Fujairah",
-    "ajman": "Ajman",
-    "ras_al_khaimah": "Ras Al Khaimah",
-    "trivandrum": "Trivandrum",
-    "alappuzha": "Alappuzha",
-    "kottayam": "Kottayam",
-    "kochi": "Kochi",
-    "thrissur": "Thrissur",
-    "kozhikode": "Kozhikode",
-    "kannur": "Kannur",
-    "mumbai": "Mumbai",
-    "pune": "Pune",
-    "delhi": "Delhi",
-    "noida": "Noida",
-    "gurugram": "Gurugram",
-    "banglore": "Banglore",
-    "hyderabad": "Hyderabad",
-    "chennai": "Chennai",
-    "kolkata": "Kolkata",
-    "ahmedabad": "Ahmedabad",
-    "lucknow": "Lucknow",
-    "coimbatore": "Coimbatore",
-    "goa": "Goa",
-    "nagpur": "Nagpur",
-    "vancouver": "Vancouver",
-}
 
 def get_locations():
     """Fetch the list of unique property locations."""
@@ -314,6 +280,23 @@ def add_location(request):
 
     return render(request, "index.html")
 
+def send_whatsapp(request):
+    property_id = request.GET.get('property_id')
+    
+    if not property_id:
+        return JsonResponse({"success": False, "error": "Property ID is missing"})
+    
+    property_obj = get_object_or_404(Property, property_id=property_id)
+    
+    message = f"Hello, I'm interested in this Property :\nName : {property_obj.property_name}\nPrice : {property_obj.formatted_price()}\nLocation : {property_obj.property_location}\nPlease provide more details."
+    
+    encoded_message = urllib.parse.quote(message)
+    whatsapp_url = f"https://wa.me/+916238061066?text={encoded_message}"
+    
+    return JsonResponse({"success": True, "whatsapp_url": whatsapp_url})
+
+
+
 def agent_login(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -385,16 +368,26 @@ def edit_property(request, property_id):
     if property.property_location not in agent.allocated_locations.all():
         return HttpResponseForbidden("You are not allowed to edit this property.")
 
+    allocated_locations = agent.allocated_locations.all()
+
     if request.method == 'POST':
-        form = PropertyForm(request.POST, request.FILES, instance=property)
+        form = PropertyForm(request.POST, request.FILES, instance=property, locations_queryset=allocated_locations)
         if form.is_valid():
-            form.save()
+            property = form.save(commit=False)
+
+            # Force property_location to be the original one, since disabled fields do not post data
+            property.property_location = property.property_location  # No change, just ensuring it stays the same
+            property.save()
+
             return redirect('agent_dashboard')
     else:
-        form = PropertyForm(instance=property)
+        form = PropertyForm(instance=property, locations_queryset=allocated_locations)
 
-    form.fields['property_location'].disabled = True  # Disable location editing
+    # Set and disable the property location field to show (but not editable)
+    # form.fields['property_location'].disabled = True
+
     return render(request, 'property_form.html', {'form': form})
+
 
 def delete_property(request, property_id):
     agent = get_logged_in_agent(request)
@@ -411,22 +404,9 @@ def delete_property(request, property_id):
     return redirect('agent_dashboard')
 
 def agent_logout(request):
-    logout(request)
-    request.session.flush()
+     # Clear only agent-specific session data
+    if 'agent_id' in request.session:
+        del request.session['agent_id']  # Remove agent session key
+
+    # Don't call logout() because it affects Django admin too
     return redirect('agent_login')
-
-
-def send_whatsapp(request):
-    property_id = request.GET.get('property_id')
-    
-    if not property_id:
-        return JsonResponse({"success": False, "error": "Property ID is missing"})
-    
-    property_obj = get_object_or_404(Property, property_id=property_id)
-    
-    message = f"Hello, I'm interested in this Property :\nName : {property_obj.property_name}\nPrice : {property_obj.formatted_price()}\nLocation : {property_obj.property_location}\nPlease provide more details."
-    
-    encoded_message = urllib.parse.quote(message)
-    whatsapp_url = f"https://wa.me/+916238061066?text={encoded_message}"
-    
-    return JsonResponse({"success": True, "whatsapp_url": whatsapp_url})

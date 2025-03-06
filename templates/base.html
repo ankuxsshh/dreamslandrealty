@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-
+    <link rel="stylesheet" href="{% static 'css/form.css' %}" />
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   </head>
 
@@ -79,75 +79,99 @@
 
       {% endblock %}
     </div>
-<!-- Main Content Block End -->
-<footer id="footer" class="footer text-white fixed-bottom">
-  <div class="container footer-top py-5 border-top border-light">
-    <div class="row gy-4">
-      <div class="col-lg-4 col-md-6 footer-about">
-        <a href="/" class="logo d-flex align-items-center text-white text-decoration-none fs-5">
-          <span class="sitename fw-bold">Dreams Land Realty</span>
-        </a>
-        <div class="footer-contact pt-3 text-white">
-          <p class="text-white mt-3"><b>Thottathil House, Kanjoor Parappuram</b></p>
-          <p class="text-white mt-3"><b>Ernakulam District, 683575, Kerala, India</b></p>
-          <p class="text-white mt-3"><strong></strong> +91 6238061066</p>
-          <p class="text-white mt-3"><strong></strong> +91 8891094916</p>
-          <p class="text-white mt-3"><strong></strong> info@dreamslandrealty.com</p>
+    <!-- Main Content Block End -->
+    <footer id="footer" class="footer text-white fixed-bottom">
+      <div class="container footer-top py-5 border-top border-light">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6 footer-about">
+            <a href="/" class="logo d-flex align-items-center text-white text-decoration-none fs-5"><span class="sitename fw-bold">Dreams Land Realty</span></a>
+            <div class="footer-contact pt-3 text-white">
+              <p class="text-white mt-3">
+                <b>Thottathil House, Kanjoor Parappuram</b>
+              </p>
+              <p class="text-white mt-3">
+                <b>Ernakulam District, 683575, Kerala, India</b>
+              </p>
+              <p class="text-white mt-3">
+                <strong></strong> +91 6238061066
+              </p>
+              <p class="text-white mt-3">
+                <strong></strong> +91 8891094916
+              </p>
+              <p class="text-white mt-3">
+                <strong></strong> info@dreamslandrealty.com
+              </p>
+            </div>
+            <div class="social-links d-flex mt-4">
+              <a href="" class="text-white me-3"><i class="fa-brands fa-twitter"></i></a>
+              <a href="https://www.facebook.com/people/Dreams-Land-Realty/61556315525578/?mibextid=ZbWKwL" class="text-white me-3"><i class="fa-brands fa-facebook-f"></i></a>
+              <a href="https://www.instagram.com/dreamslandrealty?igsh=bndscHhmN2tsaXZm" class="text-white me-3"><i class="fa-brands fa-instagram"></i></a>
+              <a href="https://www.youtube.com/@dreamslandrealty" class="text-white me-3"><i class="fa-brands fa-youtube"></i></a>
+              <a href="" class="text-white"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4 class="text-white">Quick Links</h4>
+            <br />
+            <ul class="list-unstyled">
+              <li>
+                <a href="index" class="text-white text-decoration-none">Home</a>
+              </li>
+              <li>
+                <a href="about" class="text-white text-decoration-none">About Us</a>
+              </li>
+              <li>
+                <a href="properties" class="text-white text-decoration-none">Properties</a>
+              </li>
+              <li>
+                <a href="services" class="text-white text-decoration-none">Services</a>
+              </li>
+              <li>
+                <a href="contact" class="text-white text-decoration-none">Contact</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4 class="text-white">Categories</h4>
+            <br />
+            <ul class="list-unstyled">
+              <li>
+                <a href="" class="text-white text-decoration-none">Residential</a>
+              </li>
+              <li>
+                <a href="" class="text-white text-decoration-none">Commercial</a>
+              </li>
+              <li>
+                <a href="" class="text-white text-decoration-none">Luxury Villas</a>
+              </li>
+              <li>
+                <a href="" class="text-white text-decoration-none">Plots & Lands</a>
+              </li>
+              <li>
+                <a href="" class="text-white text-decoration-none">Rentals</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-4 col-md-12 footer-newsletter">
+            <h4 class="text-white">Subscribe to Our Newsletter</h4>
+            <br />
+            <p class="text-white">Get updates on the latest properties, offers, and real estate trends.</p>
+            <form action="" method="post" class="d-flex">
+              <input type="email" name="email" class="form-control" placeholder="Enter your email" required />
+              <button type="submit" class="btn btn-warning mb-5">Subscribe</button>
+            </form>
+          </div>
         </div>
-        <div class="social-links d-flex mt-4">
-          <a href="" class="text-white me-3"><i class="fa-brands fa-twitter"></i></a>
-          <a href="https://www.facebook.com/people/Dreams-Land-Realty/61556315525578/?mibextid=ZbWKwL" class="text-white me-3">
-            <i class="fa-brands fa-facebook-f"></i>
-          </a>
-          <a href="https://www.instagram.com/dreamslandrealty?igsh=bndscHhmN2tsaXZm" class="text-white me-3">
-            <i class="fa-brands fa-instagram"></i>
-          </a>
-          <a href="https://www.youtube.com/@dreamslandrealty" class="text-white me-3">
-            <i class="fa-brands fa-youtube"></i>
-          </a>
-          <a href="" class="text-white"><i class="fa-brands fa-linkedin-in"></i></a>
-        </div>
       </div>
-      <div class="col-lg-2 col-md-3 footer-links">
-        <h4 class="text-white">Quick Links</h4>
-        <br>
-        <ul class="list-unstyled">
-          <li><a href="index" class="text-white text-decoration-none">Home</a></li>
-          <li><a href="about" class="text-white text-decoration-none">About Us</a></li>
-          <li><a href="properties" class="text-white text-decoration-none">Properties</a></li>
-          <li><a href="services" class="text-white text-decoration-none">Services</a></li>
-          <li><a href="contact" class="text-white text-decoration-none">Contact</a></li>
-        </ul>
+      <div class="container text-center mt-4 border-top border-light py-3">
+        <p class="text-white">
+          &copy; <strong>Dreams Land Realty</strong> All Rights Reserved
+        </p>
+        <p class="text-white">
+          Designed by <a href="https://www.inspirezesttechnologies.com/" class="text-white text-decoration-none"><b class="fw-bold">InspireZest Technologies</b></a>
+        </p>
       </div>
-      <div class="col-lg-2 col-md-3 footer-links">
-        <h4 class="text-white">Categories</h4>
-        <br>
-        <ul class="list-unstyled">
-          <li><a href="" class="text-white text-decoration-none">Residential</a></li>
-          <li><a href="" class="text-white text-decoration-none">Commercial</a></li>
-          <li><a href="" class="text-white text-decoration-none">Luxury Villas</a></li>
-          <li><a href="" class="text-white text-decoration-none">Plots & Lands</a></li>
-          <li><a href="" class="text-white text-decoration-none">Rentals</a></li>
-        </ul>
-      </div>
-      <div class="col-lg-4 col-md-12 footer-newsletter">
-        <h4 class="text-white">Subscribe to Our Newsletter</h4>
-        <br>
-        <p class="text-white">Get updates on the latest properties, offers, and real estate trends.</p>
-        <form action="" method="post" class="d-flex">
-          <input type="email" name="email" class="form-control" placeholder="Enter your email" required />
-          <button type="submit" class="btn btn-warning mb-5">Subscribe</button>
-        </form>
-      </div>
-    </div>
-  </div>
-  <div class="container text-center mt-4 border-top border-light py-3">
-    <p class="text-white">&copy; <strong>Dreams Land Realty</strong> All Rights Reserved</p>
-    <p class="text-white">Designed by <a href="https://www.inspirezesttechnologies.com/" class="text-white text-decoration-none">
-        <b class="fw-bold">InspireZest Technologies</b></a>
-    </p>
-  </div>
-</footer>
+    </footer>
 
     <!-- External Scripts -->
     <script src="{% static 'js/filter.js' %}"></script>
@@ -166,5 +190,6 @@
     <script src="{% static 'js/whatsapp.js' %}"></script>
     <script src="{% static 'js/wp.js' %}"></script>
     <script src="{% static 'js/overlay.js' %}"></script>
+    <script src="{% static 'js/imagescreen.js' %}"></script>
   </body>
 </html>

@@ -62,9 +62,17 @@
                   <div class="col">
                     <p class="p12">Status</p>
                     <b style="color: {% if property.is_available %}
+                        
+                        
                         green
+
+
                       {% else %}
+                        
+                        
                         red
+
+
                       {% endif %}; font-weight: 600">
                       {{ property.get_property_status_display }}
                     </b>
