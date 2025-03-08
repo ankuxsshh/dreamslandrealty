@@ -10,14 +10,14 @@
     </div>
 
     <!-- Filter Form -->
-    <form id="filter-form" method="GET" action="{% url 'filter_properties' %}">
+    <form id="filter-form" method="get" action="{% url 'filter_properties' %}">
       <!-- Dynamic Location Search -->
       <div class="form-group">
         <label for="location">Location</label>
-        <!-- Single search input for both location and property ID -->
-        <input type="text" id="searchInput" name="search" class="form-control" placeholder="Search by Location or Property ID" aria-label="Search properties" list="locationList" autocomplete="off" data-aos="fade-right" value="{{ search_query }}" />
+        <!-- Autocomplete input field -->
+        <input type="text" data-aos="fade-right" id="locationSearch" name="location" class="form-control" placeholder="Search properties" aria-label="Search properties" list="locationList" autocomplete="off" value="{{ selected_filters.location }}" />
 
-        <!-- Datalist for location suggestions -->
+        <!-- Datalist for dropdown -->
         <datalist id="locationList">
           {% for location in locations %}
             <option value="{{ location.location_name }}">{{ location.location_name }}</option>
